@@ -16,8 +16,10 @@ import {
 } from '@coreui/react';
 // sidebar nav config
 import navigation from '../../_nav';
+import navigation_mcoreui from '../../views/MCoreUI/_nav';
 // routes config
 import routes from '../../routes';
+import routes_mcoreui from '../../views/MCoreUI/routes';
 
 import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
@@ -25,6 +27,10 @@ import DefaultHeader from './DefaultHeader';
 
 class DefaultLayout extends Component {
   render() {
+    let _sideMenu = {
+      items: [].concat(navigation.items,navigation_mcoreui.items)
+    }
+
     return (
       <div className="app">
         <AppHeader fixed>
@@ -34,7 +40,7 @@ class DefaultLayout extends Component {
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
-            <AppSidebarNav navConfig={navigation} {...this.props} />
+            <AppSidebarNav navConfig={_sideMenu} {...this.props} />
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
@@ -43,6 +49,13 @@ class DefaultLayout extends Component {
             <Container fluid>
               <Switch>
                 {routes.map((route, idx) => {
+                    return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
+                        <route.component {...props} />
+                      )} />)
+                      : (null);
+                  },
+                )}
+                {routes_mcoreui.map((route, idx) => {
                     return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
                         <route.component {...props} />
                       )} />)

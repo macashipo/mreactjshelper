@@ -1,10 +1,3 @@
-const ItemsMCoreUI = [
-  {
-    name: 'Buttons',
-    url: '/buttons/buttons',
-    icon: 'icon-cursor',
-  },
-];
 const ItemsCoreUI = [
   {
     name: 'Dashboard',
@@ -462,7 +455,7 @@ const ItemsCoreUI = [
 ];
 
 const NavMenuSidebar = {
-  items: [].concat(ItemsMCoreUI,ItemsCoreUI)
+  items: [].concat(ItemsCoreUI)
 };
 
 export default NavMenuSidebar;
