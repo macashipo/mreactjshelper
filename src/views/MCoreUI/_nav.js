@@ -10,6 +10,16 @@ const Items = [
     url: PathPrefix + 'buttons',
     icon: 'icon-cursor',
   },
+  {
+    name: 'Color',
+    url: PathPrefix + 'color',
+    icon: 'icon-cursor',
+  },
+  {
+    name: 'Typo',
+    url: PathPrefix + 'typo',
+    icon: 'icon-cursor',
+  },
 ];
 
 const NavMenuSidebar = {
