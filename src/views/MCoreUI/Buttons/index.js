@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import { Button, Card, CardHeader, CardBody, CardFooter, ButtonGroup, Col, Row } from 'reactstrap';
 import { ButtonDropdown, DropdownToggle, Dropdown, DropdownItem, DropdownMenu } from 'reactstrap';
+import { Collapse } from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem} from 'reactstrap';
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Popover, PopoverBody, PopoverHeader} from 'reactstrap';
+import { Progress } from 'reactstrap';
+import { AppSwitch } from '@coreui/react';
+import { Tooltip, UncontrolledTooltip} from 'reactstrap';
+import { Nav, NavItem, NavLink} from 'reactstrap';
+import { TabContent, TabPane} from 'reactstrap';
+import classnames from 'classnames';
 
 import LaddaButton, { EXPAND_LEFT,
   EXPAND_RIGHT,
@@ -20,6 +30,434 @@ import 'ladda/dist/ladda-themeless.min.css';
 import 'spinkit/css/spinkit.css';
 
 import CardWithCode from '../Components/CardWithCode';
+
+
+class PageCollapse extends Component {
+  constructor(props) {
+    super(props);
+    this.onEntering = this.onEntering.bind(this);
+    this.onEntered = this.onEntered.bind(this);
+    this.onExiting = this.onExiting.bind(this);
+    this.onExited = this.onExited.bind(this);
+    this.state = {
+      collapse: false,
+    };
+  }
+
+  onEntering() {
+    this.setState({ status: 'Opening...' });
+  }
+
+  onEntered() {
+    this.setState({ status: 'Opened' });
+  }
+
+  onExiting() {
+    this.setState({ status: 'Closing...' });
+  }
+
+  onExited() {
+    this.setState({ status: 'Closed' });
+  }
+
+  toggle=()=>{
+    this.setState({ collapse: !this.state.collapse });
+  }
+
+  render() {
+    return (
+      <CardWithCode header="Collapse">
+        <Collapse isOpen={this.state.collapse} onEntering={this.onEntering} onEntered={this.onEntered} onExiting={this.onExiting} onExited={this.onExited}>
+          <CardBody>
+            <p>
+              Anim pariatur cliche reprehenderit,
+              enim eiusmod high life accusamus terry richardson ad squid. Nihil
+              anim keffiyeh helvetica, craft beer labore wes anderson cred
+              nesciunt sapiente ea proident.
+            </p>
+            <p>
+              Donec molestie odio id nisi malesuada, mattis tincidunt velit egestas. Sed non pulvinar risus. Aenean
+              elementum eleifend nunc, pellentesque dapibus arcu hendrerit fringilla. Aliquam in nibh massa. Cras
+              ultricies lorem non enim volutpat, a eleifend urna placerat. Fusce id luctus urna. In sed leo tellus.
+              Mauris tristique leo a nisl feugiat, eget vehicula leo venenatis. Quisque magna metus, luctus quis
+              sollicitudin vel, vehicula nec ipsum. Donec rutrum commodo lacus ut condimentum. Integer vel turpis
+              purus. Etiam vehicula, nulla non fringilla blandit, massa purus faucibus tellus, a luctus enim orci non
+              augue. Aenean ullamcorper nisl urna, non feugiat tortor volutpat in. Vivamus lobortis massa dolor, eget
+              faucibus ipsum varius eget. Pellentesque imperdiet, turpis sed sagittis lobortis, leo elit laoreet arcu,
+              vehicula sagittis elit leo id nisi.
+            </p>
+          </CardBody>
+        </Collapse>
+        <CardFooter>
+          <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>Toggle</Button>
+          <h5>Current state: {this.state.status}</h5>
+        </CardFooter>
+      </CardWithCode>
+    )
+  }
+}
+
+class PageDropdown extends Component {
+  constructor(props) {
+    super(props);
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      dropdownOpen: new Array(6).fill(false),
+    };
+  }
+
+  toggle(i) {
+    const newArray = this.state.dropdownOpen.map((element, index) => {
+      return (index === i ? !element : false);
+    });
+    this.setState({
+      dropdownOpen: newArray,
+    });
+  }
+
+  render() {
+    return (
+      <CardWithCode header="Dropdown">
+        <Dropdown isOpen={this.state.dropdownOpen[0]} toggle={() => {
+          this.toggle(0);
+        }}>
+          <DropdownToggle caret>
+            Dropdown
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem header>Header</DropdownItem>
+            <DropdownItem disabled>Action</DropdownItem>
+            <DropdownItem>Another Action</DropdownItem>
+            <DropdownItem divider />
+            <DropdownItem>Another Action</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+
+        <Dropdown isOpen={this.state.dropdownOpen[5]} toggle={() => {this.toggle(5);}}>
+          <DropdownToggle
+            tag="span"
+            onClick={() => {this.toggle(5);}}
+            data-toggle="dropdown"
+            aria-expanded={this.state.dropdownOpen[5]}
+          >
+            Custom Dropdown Content <strong> * </strong>
+          </DropdownToggle>
+          <DropdownMenu>
+            <div className="dropdown-item" onClick={() => {this.toggle(5);}}>Custom dropdown item 1</div>
+            <div className="dropdown-item" onClick={() => {this.toggle(5);}}>Custom dropdown item 2</div>
+            <div className="dropdown-item-text" onClick={() => {this.toggle(5);}}>Custom dropdown text 3</div>
+            <hr className="my-0 dropdown-item-text" />
+            <div onClick={() => {this.toggle(5);}}>Custom dropdown item 4</div>
+          </DropdownMenu>
+        </Dropdown>
+      </CardWithCode>
+    )
+  }
+}
+
+class PagePagination extends Component {
+  constructor(props) {
+    super(props);
+    
+  }
+
+  render() {
+    return (
+      <CardWithCode header="Dropdown">
+        <Pagination>
+          <PaginationItem>
+            <PaginationLink previous tag="button" />
+          </PaginationItem>
+          <PaginationItem active>
+            <PaginationLink tag="button">
+              1
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink tag="button">
+              2
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink tag="button">
+              3
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink tag="button">
+              4
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink tag="button">
+              5
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink next tag="button" />
+          </PaginationItem>
+        </Pagination>
+      </CardWithCode>
+    )
+  }
+}
+
+class PagePopover extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      popoverOpen: false,
+    };
+  }
+  toggle() {
+    this.setState({
+      popoverOpen: !this.state.popoverOpen,
+    });
+  }
+
+  render() {
+    var popovers = [
+      {
+        placement: 'top',
+        text: 'Top',
+      },
+      {
+        placement: 'bottom',
+        text: 'Bottom',
+      },
+      {
+        placement: 'left',
+        text: 'Left',
+      },
+      {
+        placement: 'right',
+        text: 'Right',
+      },
+    ];
+    let _text = popovers[0].text;
+    let _placement = popovers[0].placement;
+    return (
+      <CardWithCode header="Dropdown">
+        <span>
+          <Button className="mr-1" color="secondary" id={'Popover-1'} onClick={this.toggle}>
+            {_text}
+          </Button>
+          <Popover placement={_placement} isOpen={this.state.popoverOpen} target={'Popover-1'} toggle={this.toggle}>
+            <PopoverHeader>Popover Title</PopoverHeader>
+            <PopoverBody>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverBody>
+          </Popover>
+        </span>
+      </CardWithCode>
+    )
+  }
+}
+
+class PageProgressBar extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <CardWithCode header="Dropdown">
+        <div className="text-center">25%</div>
+        <Progress value="25" />
+        <div className="text-center">Multi</div>
+        <Progress multi>
+          <Progress bar value="15" />
+          <Progress bar color="success" value="30" />
+          <Progress bar color="info" value="25" />
+          <Progress bar color="warning" value="20" />
+          <Progress bar color="danger" value="5" />
+        </Progress>
+        <div className="text-center">With Text</div>
+        <Progress value="25" className="mb-3">25%</Progress>
+        <div className="text-center">Striped</div>
+        <Progress striped color="info" value={50} className="mb-3" />
+        <div className="text-center">Animated</div>
+        <Progress animated color="danger" value="100" className="mb-3" />
+        <div className="text-center">1 of 5</div>
+        <Progress value="1" max="5" />
+      </CardWithCode>
+    )
+  }
+}
+
+class PageSwitch extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <CardWithCode header="Dropdown">
+        <AppSwitch className={'mx-1'} color={'primary'} checked />
+        <AppSwitch className={'mx-1'} color={'secondary'} />
+        <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} checked />
+        <AppSwitch className={'mx-1'} variant={'3d'} color={'warning'} defaultChecked />
+        <AppSwitch className={'mx-1'} variant={'3d'} color={'dark'} checked disabled />
+        <AppSwitch className={'mx-1'} variant={'3d'} color={'danger'} checked outline={'alt'} />
+        <AppSwitch className={'mx-1'} variant={'3d'} color={'primary'} defaultChecked label dataOn={'\u2713'} dataOff={'\u2715'} />
+        <AppSwitch className={'mx-1'} variant={'3d'} outline={'alt'} color={'secondary'} defaultChecked label dataOn={'\u2713'} dataOff={'\u2715'}/>
+        <AppSwitch className={'mx-1'} variant={'3d'} outline={'alt'} color={'success'} defaultChecked label />
+        <AppSwitch className={'mx-1'} color={'warning'} outline checked />
+        <AppSwitch className={'mx-1'} color={'success'} label checked />
+      </CardWithCode>
+    )
+  }
+}
+
+class TooltipItem extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      tooltipOpen: false,
+    };
+  }
+
+  toggle() {
+    this.setState({
+      tooltipOpen: !this.state.tooltipOpen,
+    });
+  }
+
+  render() {
+    return (
+      <span>
+        <Button className="mr-1" color="secondary" id={'Tooltip-' + this.props.id}>
+          {this.props.item.text}
+        </Button>
+        <Tooltip placement={this.props.item.placement} isOpen={this.state.tooltipOpen} target={'Tooltip-' + this.props.id} toggle={this.toggle}>
+          Tooltip Content!
+        </Tooltip>
+      </span>
+    );
+  }
+}
+class PageTooltip extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      tooltipOpen: [false, false],
+      tooltips: [
+        {
+          placement: 'top',
+          text: 'Top',
+        },
+        {
+          placement: 'bottom',
+          text: 'Bottom',
+        },
+        {
+          placement: 'left',
+          text: 'Left',
+        },
+        {
+          placement: 'right',
+          text: 'Right',
+        },
+      ],
+    };
+  }
+  toggle(i) {
+    const newArray = this.state.tooltipOpen.map((element, index) => {
+      return (index === i ? !element : false);
+    });
+    this.setState({
+      tooltipOpen: newArray,
+    });
+  }
+
+  render() {
+    return (
+      <CardWithCode header="Dropdown">
+        {this.state.tooltips.map((tooltip, i) => {
+          return <TooltipItem key={i} item={tooltip} id={i} />;
+        })}
+      </CardWithCode>
+    )
+  }
+}
+
+class PageTab extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      activeTab: '1',
+    };
+  }
+  toggle(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab,
+      });
+    }
+  }
+
+  render() {
+    return (
+      <CardWithCode header="Dropdown">
+        <Nav tabs>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === '1' })}
+              onClick={() => { this.toggle('1'); }}
+            >
+              Home
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === '2' })}
+              onClick={() => { this.toggle('2'); }}
+            >
+              Profile
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === '3' })}
+              onClick={() => { this.toggle('3'); }}
+            >
+              Messages
+            </NavLink>
+          </NavItem>
+        </Nav>
+        <TabContent activeTab={this.state.activeTab}>
+          <TabPane tabId="1">
+            1. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+            officia deserunt mollit anim id est laborum.
+          </TabPane>
+          <TabPane tabId="2">
+            2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+            officia deserunt mollit anim id est laborum.
+          </TabPane>
+          <TabPane tabId="3">
+            2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+            officia deserunt mollit anim id est laborum.
+          </TabPane>
+        </TabContent>
+      </CardWithCode>
+    )
+  }
+}
 
 class Buttons extends Component {
   constructor(props) {
@@ -50,7 +488,7 @@ class Buttons extends Component {
         <CardWithCode header="CardCode" code={
 `<CardWithCode header="Test" code={"code"}>
 </CardWithCode>
-`}> This Card </CardWithCode>
+`}> This Card oo</CardWithCode>
         <CardWithCode header="Buttons">
           <Row className="align-items-center">
             <Col col="12" xl className="mb-3 mb-xl-0">
@@ -263,6 +701,30 @@ class Buttons extends Component {
 
           <div style={{width:'50px',height:'50px'}} className="img-spinner"></div>
         </CardWithCode>
+
+        <CardWithCode header="Loading">
+          <Breadcrumb>
+            <BreadcrumbItem active>Home</BreadcrumbItem>
+          </Breadcrumb>
+          <Breadcrumb>
+            <BreadcrumbItem><a href="#">Home</a></BreadcrumbItem>
+            <BreadcrumbItem active>Library</BreadcrumbItem>
+          </Breadcrumb>
+          <Breadcrumb>
+            <BreadcrumbItem><a href="#">Home</a></BreadcrumbItem>
+            <BreadcrumbItem><a href="#">Library</a></BreadcrumbItem>
+            <BreadcrumbItem active>Data</BreadcrumbItem>
+          </Breadcrumb>
+        </CardWithCode>
+
+        <PageCollapse />
+        <PageDropdown />
+        <PagePagination />
+        <PagePopover />
+        <PageProgressBar />
+        <PageSwitch />
+        <PageTooltip />
+        <PageTab />
       </div>
     );
   }
