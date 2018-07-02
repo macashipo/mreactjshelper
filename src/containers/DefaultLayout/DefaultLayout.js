@@ -17,9 +17,11 @@ import {
 // sidebar nav config
 import navigation from '../../_nav';
 import navigation_mcoreui from '../../views/MCoreUI/_nav';
+import navigation_mworkflow from '../../views/MWorkflow/_nav';
 // routes config
 import routes from '../../routes';
 import routes_mcoreui from '../../views/MCoreUI/routes';
+import routes_mworkflow from '../../views/MWorkflow/routes';
 
 import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
@@ -28,8 +30,18 @@ import DefaultHeader from './DefaultHeader';
 class DefaultLayout extends Component {
   render() {
     let _sideMenu = {
-      items: [].concat(navigation.items,navigation_mcoreui.items)
+      items: [].concat(
+        navigation.items,
+        navigation_mcoreui.items,
+        navigation_mworkflow.items
+      )
     }
+
+    let _routes = [].concat(
+      routes,
+      routes_mcoreui,
+      routes_mworkflow
+    )
 
     return (
       <div className="app">
@@ -48,7 +60,7 @@ class DefaultLayout extends Component {
             <AppBreadcrumb appRoutes={routes}/>
             <Container fluid>
               <Switch>
-                {routes.map((route, idx) => {
+                {/* {routes.map((route, idx) => {
                     return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
                         <route.component {...props} />
                       )} />)
@@ -56,6 +68,13 @@ class DefaultLayout extends Component {
                   },
                 )}
                 {routes_mcoreui.map((route, idx) => {
+                    return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
+                        <route.component {...props} />
+                      )} />)
+                      : (null);
+                  },
+                )} */}
+                {_routes.map((route, idx) => {
                     return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
                         <route.component {...props} />
                       )} />)
